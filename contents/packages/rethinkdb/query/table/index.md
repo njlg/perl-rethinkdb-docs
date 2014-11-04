@@ -1,0 +1,181 @@
+---
+title: Rethinkdb::Query::Table
+template: package.jade
+synopsis: RethinkDB Query Table
+description: Rethinkdb::Query::Table is a type of query that represents a table in a database.
+---
+# Rethinkdb::Query::Table
+
+Rethinkdb::Query::Table is a type of query that represents a table in a database. This classes contains methods to interact with said table.
+
+
+
+
+## ATTRIBUTES
+
+[Rethinkdb::Query::Table](/packages/rethinkdb/query/table) implements the following attributes.
+
+### name
+
+```perl
+my $table = r->db('comics')->table('superheros');
+say $table->name;
+
+```
+
+The name of the table.
+
+## METHODS
+
+[Rethinkdb::Query::Table](/packages/rethinkdb/query/table) implements the following methods.
+
+### create
+
+```perl
+r->db('test')->table('dc_universe')->create->run;
+
+```
+
+Create this table. A RethinkDB table is a collection of JSON documents.
+
+If successful, the operation returns an object: `{created => 1}`. If a
+table with the same name already exists, the operation returns a
+`runtime_error`.
+
+**Note:** that you can only use alphanumeric characters and underscores for the
+table name.
+
+### drop
+
+```perl
+r->db('test')->table('dc_universe')->drop->run(conn)
+
+```
+
+Drop this table. The table and all its data will be deleted.
+
+If successful, the operation returns an object: `{dropped => 1}`. If the
+specified table doesn't exist a `runtime_error` is returned.
+
+### index_create
+
+```perl
+r->table('comments')->index_create('post_id')->run;
+
+```
+
+Create a new secondary index on a table.
+
+### index_drop
+
+```perl
+r->table('dc')->index_drop('code_name')->run;
+
+```
+
+Delete a previously created secondary index of this table.
+
+### index_list
+
+```perl
+r->table('marvel')->index_list->run;
+
+```
+
+List all the secondary indexes of this table.
+
+### index_status
+
+```perl
+r->table('test')->index_status->run;
+r->table('test')->index_status('timestamp')->run;
+
+```
+
+Get the status of the specified indexes on this table, or the status of all
+indexes on this table if no indexes are specified.
+
+### index_wait
+
+```perl
+r->table('test')->index_wait->run;
+r->table('test')->index_wait('timestamp')->run;
+
+```
+
+Wait for the specified indexes on this table to be ready, or for all indexes on
+this table to be ready if no indexes are specified.
+
+### changes
+
+```perl
+my $stream = r->table('games')->changes->run;
+foreach( @{$stream} ) {
+  say Dumper $_;
+}
+
+```
+
+Return an infinite stream of objects representing changes to a table. Whenever
+an `insert`, `delete`, `update` or `replace` is performed on the table, an
+object of the form `{'old_val' => ..., 'new_val' => ...}` will be appended
+to the stream. For an `insert`, `old_val` will be `null`, and for a
+`delete`, `new_val` will be `null`.
+
+### insert
+
+```perl
+r->table('posts')->insert({
+  id => 1,
+  title => 'Lorem ipsum',
+  content => 'Dolor sit amet'
+})->run;
+
+```
+
+Insert documents into a table. Accepts a single document or an array of
+documents.
+
+### sync
+
+["sync"](#sync) ensures that writes on a given table are written to permanent storage.
+Queries that specify soft durability `{durability => 'soft'}` do not give
+such guarantees, so sync can be used to ensure the state of these queries. A
+call to sync does not return until all previous writes to the table are
+persisted.
+
+### get
+
+```perl
+r->table('posts')->get('a9849eef-7176-4411-935b-79a6e3c56a74')->run;
+
+```
+
+Get a document by primary key.
+
+If no document exists with that primary key, ["get"](#get) will return `null`.
+
+### get_all
+
+```perl
+r->table('marvel')->get_all('man_of_steel', { index => 'code_name' })->run;
+
+```
+
+Get all documents where the given value matches the value of the requested
+index.
+
+### between
+
+```perl
+r->table('marvel')->between(10, 20)->run;
+
+```
+
+Get all documents between two keys. Accepts three optional arguments: `index`,
+`left_bound`, and `right_bound`. If `index` is set to the name of a
+secondary index, ["between"](#between) will return all documents where that index's value
+is in the specified range (it uses the primary key by default). `left_bound`
+or `right_bound` may be set to open or closed to indicate whether or not to
+include that endpoint of the range (by default, `left_bound` is closed and
+`right_bound` is open).

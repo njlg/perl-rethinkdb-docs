@@ -1,0 +1,28 @@
+{
+  "locals": {
+    "url": "http://localhost:8080",
+    "name": "Perl RethinkDB",
+    "owner": "Nathan Levin-Greenhaw",
+    "description": "A Pure Perl RethinkDB Driver"
+  },
+  "plugins": [
+    "./plugins/paginator.coffee",
+    "./plugins/paginator2.coffee",
+    "./plugins/sidenav.coffee"
+  ],
+  "require": {
+    "moment": "moment",
+    "_": "underscore",
+    "typogr": "typogr"
+  },
+  "jade": {
+    "pretty": true
+  },
+  "markdown": {
+    "smartLists": true,
+    "smartypants": true
+  },
+  "paginator": {
+    "perPage": 3
+  }
+}

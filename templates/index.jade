@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  p Rethinkdb enables Perl programs to interact with RethinkDB in a easy-to-use way. This particular driver is based on the official Python, Javascript, and Ruby drivers. To learn more about RethinkDB take a look at the official documentation.
+  p Read more about each module below.
+
+  each package in packages
+    article.package.intro
+      header
+        h2
+          a(href=package.url)= package.title
+      section.content
+        if package.metadata.description
+          | !{ typogr(package.metadata.description).typogrify() }
+        else if package.metadata.synopsis
+          | !{ typogr(package.metadata.synopsis).typogrify() }
