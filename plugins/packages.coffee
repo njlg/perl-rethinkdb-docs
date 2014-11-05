@@ -8,10 +8,9 @@ module.exports = (env, callback) ->
     template: 'index.jade' # template that renders pages
     packages: 'packages' # directory containing contents to paginate
     first: 'index.html' # filename/url for first page
-    filename: 'page/%d/index.html' # filename for rest of pages
 
   # assign defaults any option not set in the config file
-  options = env.config.paginator2 or {}
+  options = env.config.packages or {}
   for key, value of defaults
     options[key] ?= defaults[key]
 
@@ -36,19 +35,16 @@ module.exports = (env, callback) ->
 
     return packages
 
-  class PaginatorPage2 extends env.plugins.Page
+  class PackagePage extends env.plugins.Page
     ### A page has a number and a list of packages ###
 
-    constructor: (@pageNum, @packages) ->
+    constructor: (@packages) ->
 
     getFilename: ->
-      if @pageNum is 1
-        options.first
-      else
-        options.filename.replace '%d', @pageNum
+      options.first
 
     getView: -> (env, locals, contents, templates, callback) ->
-      # simple view to pass packages and pagenum to the paginator template
+      # simple view to pass packages to the paginator template
       # note that this function returns a funciton
 
       # get the pagination template
@@ -57,7 +53,7 @@ module.exports = (env, callback) ->
         return callback new Error "unknown paginator template '#{ options.template }'"
 
       # setup the template context
-      ctx = {@packages, @pageNum}
+      ctx = {@packages}
 
       # extend the template context with the enviroment locals
       env.utils.extend ctx, locals
@@ -67,7 +63,7 @@ module.exports = (env, callback) ->
 
   # register a generator, 'paginator' here is the content group generated content will belong to
   # i.e. contents._.paginator
-  env.registerGenerator 'paginator2', (contents, callback) ->
+  env.registerGenerator 'packages', (contents, callback) ->
 
     # find all packages
     packages = getPackages contents
@@ -76,11 +72,8 @@ module.exports = (env, callback) ->
 
     # create the object that will be merged with the content tree (contents)
     # do _not_ modify the tree directly inside a generator, consider it read-only
-    rv = {pages: {}}
-
-    stuff = new PaginatorPage2 1, packages
-    rv['index.page'] = stuff
-    rv['pages']['1.page'] = stuff
+    rv =
+      'index.page': new PackagePage packages
 
     # callback with the generated contents
     callback null, rv

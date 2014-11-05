@@ -82,12 +82,12 @@ sub downgrade_headers {
 
   $content =~ s/\n### /\n#### /g;
   $content =~ s/\n## /\n### /g;
-  $content =~ s/\n# /\n## /g;
+  $content =~ s/([^;])\n# /$1\n## /g;
 
   return $content;
 }
 
-sub fixCodeBlocks {
+sub fix_code_blocks {
   my $content = shift;
 
   my $start = 0;
@@ -124,6 +124,7 @@ sub clean_link {
 
   $link = lc $link;
   $link =~ s!::!/!g;
+  $link =~ s! !-!g;
 
   return $link;
 }
@@ -144,7 +145,7 @@ sub fix_underscores {
   return $content;
 }
 
-sub convertToMarkdown {
+sub convert_to_markdown {
   my $file = shift;
   my $content = read_file $file;
 
@@ -177,7 +178,11 @@ sub convertToMarkdown {
   $output =~ s/\(C\)/&copy;/g;
 
   # fix code blocks to use fences
-  $output = fixCodeBlocks $output;
+  $output = fix_code_blocks $output;
+
+  if( $file =~ /Rethinkdb.pm$/ ) {
+    say $output;
+  }
 
   # clean up format for web
   my ($module, $subtitle) = get_module_name $output;
@@ -200,7 +205,7 @@ sub convertToMarkdown {
   return ($start, $description, $subtitle);
 }
 
-sub buildNavigation {
+sub build_navigation {
   my $content = shift;
   my @lines = split '\n', $content;
   my @headers = grep /^#/, @lines;
@@ -272,10 +277,41 @@ sub templatize {
   $template =~ s!{{description}}!$description!;
   $template =~ s!{{synopsis}}!$subtitle!;
 
+  # remove any extra lines
+  # $template =~ s/\n\n\n+/\n\n/g;
+
   say "templatize @ $title";
   say "\t $template";
 
   return $template . $markdown;
+}
+
+sub build_toc {
+  my $contents = shift;
+
+  my $link = q{};
+  my @lines = split "\n", $contents;
+  my @headers = ();
+
+  foreach(@lines) {
+    say "line: $_";
+    if( $_ =~ /^# (.+)$/ ) {
+      $link = clean_link $1;
+      push @headers, " - [$1](#$link)";
+    }
+    elsif( $_ =~ /^## (.+)$/ ) {
+      $link = clean_link $1;
+      push @headers, "   - [$1](#$link)";
+    }
+    elsif( $_ =~ /^### (.+)$/ ) {
+      $link = clean_link $1;
+      push @headers, "     - [$1](#$link)";
+    }
+  }
+
+  say Dumper \@headers;
+
+  return join "\n", @headers;
 }
 
 my @data = <DATA>;
@@ -294,7 +330,7 @@ foreach(@files) {
   }
 
   # create markdowns
-  ($content, $description, $subtitle) = convertToMarkdown $_;
+  ($content, $description, $subtitle) = convert_to_markdown $_;
   $content = templatize($pages[$#pages], $content, $description, $subtitle, $template);
 
   $filename = $_;
@@ -307,8 +343,15 @@ foreach(@files) {
   makeDirectory $filename;
   write_file $filename, $content;
 
+  # make table of contents
+  $content = build_toc $content;
+  $filename =~ s/index.md$/toc.md/;
+
+  say "writing $filename";
+  write_file $filename, $content;
+
   # # make navigation file
-  # $content = buildNavigation $content;
+  # $content = build_navigation $content;
   # $filename =~ s!content/!templates/includes/!;
   # $filename =~ s!(\w+).md$!nav-$1.hbs!;
   #

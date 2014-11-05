@@ -468,7 +468,7 @@ r->table('users')->filter(
 
 ```perl
 r->table('people')->get_all('Alice', 'Bob')->run;
- # or
+# or
 r->table('people')->get_all(r->args(['Alice', 'Bob']))->run;
 
 ```

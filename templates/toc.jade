@@ -1,0 +1,13 @@
+mixin level(item)
+  li
+    a(href='#')
+      | #{item.name}
+    if item.children && item.children.length > 0
+      ul
+        each child in item.children
+          +level(child)
+  
+if headers && headers.length > 0
+  ul
+    for header in headers
+      +level(header)

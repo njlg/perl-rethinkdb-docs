@@ -6,9 +6,8 @@
     "description": "A Pure Perl RethinkDB Driver"
   },
   "plugins": [
-    "./plugins/paginator.coffee",
-    "./plugins/paginator2.coffee",
-    "./plugins/sidenav.coffee"
+    "./plugins/packages.coffee",
+    "./plugins/toc.coffee"
   ],
   "require": {
     "moment": "moment",

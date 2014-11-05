@@ -1,0 +1,6 @@
+ - [Rethinkdb::Query::Datum](#rethinkdb/query/datum)
+   - [DESCRIPTION](#description)
+   - [ATTRIBUTES](#attributes)
+     - [data](#data)
+     - [datumType](#datumtype)
+   - [SEE ALSO](#see-also)

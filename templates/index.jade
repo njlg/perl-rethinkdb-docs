@@ -10,7 +10,7 @@ block content
         h2
           a(href=package.url)= package.title
       section.content
-        if package.metadata.description
+        if package.metadata && package.metadata.description
           | !{ typogr(package.metadata.description).typogrify() }
-        else if package.metadata.synopsis
+        else if package.metadata && package.metadata.synopsis
           | !{ typogr(package.metadata.synopsis).typogrify() }
