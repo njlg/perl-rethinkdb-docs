@@ -6,7 +6,7 @@ module.exports = (env, callback) ->
 
   defaults =
     template: 'index.jade' # template that renders pages
-    packages: 'packages' # directory containing contents to paginate
+    packages: 'rethinkdb' # directory containing contents to paginate
     first: 'index.html' # filename/url for first page
 
   # assign defaults any option not set in the config file
@@ -17,13 +17,15 @@ module.exports = (env, callback) ->
   getPackages = (contents) ->
     # helper that returns a list of packages found in *contents*
     # note that each article is assumed to have its own directory in the packages directory
-    packages = contents[options.packages]._.directories.map (item) -> item.index
+    packages = [contents[options.packages]['index.md']]
 
-    contents[options.packages]['rethinkdb']._.directories.map (item) ->
+    contents[options.packages]._.directories.map (item) ->
       packages.push item.index
 
-    contents[options.packages]['rethinkdb']['query']._.directories.map (item) ->
+    contents[options.packages]['query']._.directories.map (item) ->
       packages.push item.index
+
+    console.dir packages
 
     # skip packages that does not have a template associated
     packages = packages.filter (item) -> item.template isnt 'none'
