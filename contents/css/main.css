@@ -1,4 +1,8 @@
 
+* {
+  box-sizing: border-box;
+}
+
 h1, h2, h3, h4, h5, h6, p, body, a, img, ul, ol, blockquote, pre {
   margin: 0; padding: 0; border: 0;
 }
@@ -12,7 +16,7 @@ body {
 }
 
 .content-wrap {
-  width: 34em;
+  width: 46em;
   margin: 0 auto;
 }
 
@@ -32,7 +36,7 @@ p {
 pre {
   font-size: 0.9em;
   overflow: auto;
-  background: #fff;
+  background: #2d2d2d;
   border-radius: 0.25em;
   margin-bottom: 1.8em;
   padding: 1em;
@@ -128,16 +132,20 @@ body.article-detail > header {
 } */
 
 body.article-detail #top {
-  display: none;
   position: fixed;
   right: 5px;
   bottom: 20px;
-  opacity: 0.5;
+  transition: opacity .15s ease-in-out;
+  opacity: 0;
 }
 
-body.article-detail #top:hover {
+body.article-detail #top.show:hover {
   color: black;
   opacity: 1;
+}
+
+body.article-detail #top.show {
+  opacity: 0.5;
 }
 
 /* page footer */
@@ -210,34 +218,92 @@ footer .copy, footer .copy a {
   margin-bottom: 0.8em;
 }
 
-/* sidebar */
-nav {
-  position: fixed;
-  left: 0;
+/* row container */
+.row:after {
+  clear: both;
+  display: table;
+  content: ' ';
 }
 
-nav.sidebar ul {
+/* sidebar */
+.sidebar {
+  float: left;
+  width: 12em;
+  position: relative;
+  min-height: 1px;
+}
+
+nav {
+  overflow-y: scroll;
+  width: 11em;
+  height: 90%;
+}
+
+nav.stuck {
+  top: 1em;
+  position: fixed;
+}
+
+nav.affix-top {
+  position: static;
+}
+
+nav.affix-bottom {
+  bottom: 2em;
+  position: fixed;
+}
+
+nav.affix {
+  top: 1em;
+  position: fixed;
+}
+
+nav ul.nav {
+  margin: 1em 0 0;
+}
+
+nav > ul {
+  position: relative;
+}
+
+nav ul {
   margin: 0;
   list-style: none;
 }
 
-nav.sidebar li > ul {
+nav li {
+  margin-bottom: 0;
+}
+
+nav li > ul {
   display: none;
 }
 
-nav.sidebar li.active > ul {
+nav li.active {
+  border-radius: 3px;
+}
+
+nav li.active > ul {
   display: inherit;
   margin-left: 20px;
 }
 
-nav.sidebar li.active > a {
+nav li > a {
+  display: block;
+}
+
+nav li.active > a {
   color: purple;
+  background: #eee;
 }
 
 /* article */
 
 .article {
-  margin: 3em 0 4em;
+  /* display: inline-block; */
+  margin: 0 0 4em;
+  width: 34em;
+  float: left;
 }
 
 .article header {
@@ -364,6 +430,7 @@ code {
 
 pre code {
   display: block;
+  color: #ccc;
   line-height: 1.1;
 }
 
@@ -404,40 +471,39 @@ code.lang-markdown .bullet {
   color: #bbb;
 }
 
-/* Tomorrow Theme */
-/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Tomorrow Night Eighties Theme */
 /* Original theme - https://github.com/chriskempson/tomorrow-theme */
 /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
 .tomorrow-comment, pre .comment, pre .title {
-  color: #8e908c;
+  color: #999999;
 }
 
 .tomorrow-red, pre .variable, pre .attribute, pre .tag, pre .regexp, pre .ruby .constant, pre .xml .tag .title, pre .xml .pi, pre .xml .doctype, pre .html .doctype, pre .css .id, pre .css .class, pre .css .pseudo {
-  color: #c82829;
+  color: #f2777a;
 }
 
 .tomorrow-orange, pre .number, pre .preprocessor, pre .built_in, pre .literal, pre .params, pre .constant {
-  color: #f5871f;
+  color: #f99157;
 }
 
 .tomorrow-yellow, pre .class, pre .ruby .class .title, pre .css .rules .attribute {
-  color: #eab700;
+  color: #ffcc66;
 }
 
 .tomorrow-green, pre .string, pre .value, pre .inheritance, pre .header, pre .ruby .symbol, pre .xml .cdata {
-  color: #718c00;
+  color: #99cc99;
 }
 
 .tomorrow-aqua, pre .css .hexcolor {
-  color: #3e999f;
+  color: #66cccc;
 }
 
 .tomorrow-blue, pre .function, pre .python .decorator, pre .python .title, pre .ruby .function .title, pre .ruby .title .keyword, pre .perl .sub, pre .javascript .title, pre .coffeescript .title {
-  color: #4271ae;
+  color: #6699cc;
 }
 
 .tomorrow-purple, pre .keyword, pre .javascript .function {
-  color: #8959a8;
+  color: #cc99cc;
 }
 
 /* media queries */
@@ -446,18 +512,28 @@ code.lang-markdown .bullet {
   body { font-size: 26px; }
 }
 
-@media (max-width: 900px) {
-  body { font-size: 18px; }
-}
-
-@media (max-width: 770px) {
-  body.article-detail #top {
+@media (max-width: 1140px) {
+  body.article-detail #top.show {
     position: inherit;
     opacity: 1;
   }
-  body.article-detail #top:hover {
+  body.article-detail #top.show:hover {
     color: #ff8000;
   }
+}
+
+@media (max-width: 970px) {
+  .sidebar {
+    display: none;
+  }
+  .article {
+    float: none;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  body { font-size: 18px; }
 }
 
 @media (max-width: 690px) {
@@ -505,5 +581,8 @@ code.lang-markdown .bullet {
   }
   footer .about p {
     margin-bottom: 1em;
+  }
+  .sidebar {
+    display: none;
   }
 }

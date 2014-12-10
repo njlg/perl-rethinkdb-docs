@@ -40,7 +40,6 @@
      - [november](#november)
      - [december](#december)
      - [args](#args)
- - [or](#or)
      - [do](#do)
      - [branch](#branch)
      - [error](#error)
@@ -52,5 +51,3 @@
      - [desc](#desc)
      - [true](#true)
      - [false](#false)
-   - [AUTHOR](#author)
-   - [COPYRIGHT AND LICENSE](#copyright-and-license)

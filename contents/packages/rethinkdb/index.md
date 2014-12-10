@@ -8,9 +8,6 @@ description: Rethinkdb enables Perl programs to interact with RethinkDB in a eas
 
 Rethinkdb enables Perl programs to interact with RethinkDB in a easy-to-use way. This particular driver is based on the official Python, Javascript, and Ruby drivers.  To learn more about RethinkDB take a look at the official documentation.
 
-
-
-
 ```perl
 package MyApp;
 use Rethinkdb;
@@ -601,19 +598,3 @@ r->true->run;
 
 Helper literal since Perl does not have a `false` literal.
 
-## AUTHOR
-
-Nathan Levin-Greenhaw, `njlg@cpan.org`.
-
-## COPYRIGHT AND LICENSE
-
-Unless otherwise noted:
-
-Copyright &copy; 2013-2014, Nathan Levin-Greenhaw
-
-A lot of the above documentation above was taken from the
-[official documentation](http://rethinkdb.com/api/).
-Copyright &copy; 2010-2014 RethinkDB.
-
-This program is free software, you can redistribute it and/or modify it under
-the terms of the Artistic License version 2.0.

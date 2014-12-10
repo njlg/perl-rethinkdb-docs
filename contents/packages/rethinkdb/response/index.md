@@ -8,9 +8,6 @@ description: All responses from the driver come as an instance of this class.
 
 All responses from the driver come as an instance of this class.
 
-
-
-
 ```perl
 package MyApp;
 use Rethinkdb;

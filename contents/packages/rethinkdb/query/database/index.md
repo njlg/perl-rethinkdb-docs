@@ -8,9 +8,6 @@ description: Rethinkdb::Query::Database is a type of query that represents a dat
 
 Rethinkdb::Query::Database is a type of query that represents a database. This classes contains methods to interact with a database or the underlying tables.
 
-
-
-
 ## ATTRIBUTES
 
 [Rethinkdb::Query::Database](/packages/rethinkdb/query/database) implements the following attributes.

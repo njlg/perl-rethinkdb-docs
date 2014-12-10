@@ -6,8 +6,7 @@
     "description": "A Pure Perl RethinkDB Driver"
   },
   "plugins": [
-    "./plugins/packages.coffee",
-    "./plugins/toc.coffee"
+    "./plugins/packages.coffee"
   ],
   "require": {
     "moment": "moment",

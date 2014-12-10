@@ -8,17 +8,18 @@ block prepend title
   | #{ page.title + " - "}
 
 block content
-  nav.sidebar.affix(role='complementary')
-    !=contents.toc[page.filepath.relative].headers
-    //- each header in contents.toc[page.filepath.relative].html
-      
-    !=page.filepath.relative.replace('index.md', 'toc.md')
-    //- for page in Object.keys(contents)
-    //-   p= page
-    //- !=contents['packages']['rethinkdb']['toc.md'].html
+  .row
+    .sidebar
+      nav(role='complementary' data-spy='affix' data-offset-top='250' data-offset-bottom='175')
+        - var path = page.filepath.relative.replace('index.md', 'toc.md').split('/')
+        - var obj = null, last = {}
+        each p in path
+          - if( !obj ) { obj = contents[p]; last = obj }
+          - else last = last[p]
+        != last.html.replace('<ul>', '<ul class="nav">').replace('<li>', '<li class="active">').replace(/href="[^#]*(#[^"]+)"/g, 'href="$1"')
 
-  article.article(role='main')
-    section.content!= typogr(page.html).typogrify()
+    article.article(role='main')
+      section.content!= typogr(page.html).typogrify()
 
 block prepend footer
   div.nav
@@ -26,8 +27,8 @@ block prepend footer
     a(href='#content' id='top') ↑ Top
 
 block scripts
-  script.
-    $(window).scroll(function() {
-      $(window).scrollTop() < 100 ? $('#top').fadeOut('slow') : $('#top').fadeIn('slow');
-    });
-    $('body').scrollspy({ target: 'nav' })
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+  script(src='/js/bootstrap.min.js')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/shortcuts/sticky-elements/waypoints-sticky.min.js')
+  script(src='/js/p.js')

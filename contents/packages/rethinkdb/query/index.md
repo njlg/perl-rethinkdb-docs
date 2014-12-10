@@ -8,9 +8,6 @@ description: Rethinkdb::Query is a type of query.
 
 Rethinkdb::Query is a type of query.
 
-
-
-
 ## ATTRIBUTES
 
 [Rethinkdb::Query](/packages/rethinkdb/query) implements the following attributes.

@@ -8,9 +8,6 @@ description: This module handles communicating with the RethinkDB Database.
 
 This module handles communicating with the RethinkDB Database.
 
-
-
-
 ```perl
 package MyApp;
 use Rethinkdb::IO;

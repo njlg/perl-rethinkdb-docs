@@ -1,4 +1,4 @@
- - [Rethinkdb::Response](#rethinkdb/response)
+ - [Rethinkdb::Response](#rethinkdb-response)
    - [ATTRIBUTES](#attributes)
      - [type](#type)
      - [type_description](#type_description)

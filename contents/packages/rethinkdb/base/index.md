@@ -6,11 +6,6 @@ description:
 ---
 # Rethinkdb::Base
 
-
-
-
-
-
 ```perl
 package Cat;
 use Rethinkdb::Base -base;

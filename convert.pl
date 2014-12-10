@@ -129,6 +129,16 @@ sub clean_link {
   return $link;
 }
 
+sub clean_toc_link {
+  my $link = shift;
+
+  $link = lc $link;
+  $link =~ s!::!-!g;
+  $link =~ s! !-!g;
+
+  return $link;
+}
+
 sub fix_links {
   my $content = shift;
 
@@ -180,10 +190,6 @@ sub convert_to_markdown {
   # fix code blocks to use fences
   $output = fix_code_blocks $output;
 
-  if( $file =~ /Rethinkdb.pm$/ ) {
-    say $output;
-  }
-
   # clean up format for web
   my ($module, $subtitle) = get_module_name $output;
   my $description = get_description $output;
@@ -194,6 +200,14 @@ sub convert_to_markdown {
   $output = downgrade_headers $output;
   $output = fix_links $output;
   $output = fix_underscores $output;
+
+  if( $file =~ /Rethinkdb.pm$/ ) {
+    say 'CLEANING!!!';
+    $output =~ s/## AUTHOR[^#]+//g;
+    $output =~ s/## COPYRIGHT AND LICENSE[^#]+//g;
+
+    say $output;
+  }
 
   # my $start = qq{# $module <small>$subtitle</small>};
   my $start = qq{# $module};
@@ -241,7 +255,6 @@ sub build_navigation {
     push @nav, q{</ul>};
   }
 
-  # say Dumper \@nav;
   return join "\n", @nav;
 }
 
@@ -278,10 +291,7 @@ sub templatize {
   $template =~ s!{{synopsis}}!$subtitle!;
 
   # remove any extra lines
-  # $template =~ s/\n\n\n+/\n\n/g;
-
-  say "templatize @ $title";
-  say "\t $template";
+  $markdown =~ s/\n\n+/\n\n/g;
 
   return $template . $markdown;
 }
@@ -290,26 +300,32 @@ sub build_toc {
   my $contents = shift;
 
   my $link = q{};
+  my $outside_fence = 1;
   my @lines = split "\n", $contents;
   my @headers = ();
 
   foreach(@lines) {
-    say "line: $_";
-    if( $_ =~ /^# (.+)$/ ) {
-      $link = clean_link $1;
-      push @headers, " - [$1](#$link)";
+    if( $_ =~ /^```perl/ ) {
+      $outside_fence = 0;
     }
-    elsif( $_ =~ /^## (.+)$/ ) {
-      $link = clean_link $1;
+    elsif( $_ =~ /^```/ ) {
+      $outside_fence = 1;
+    }
+    elsif( $outside_fence && $_ =~ /^# (.+)$/ ) {
+      $link = clean_toc_link $1;
+      my $name = $1;
+      $name =~ s/Rethinkdb::Query::/Rethinkdb::Query:: /;
+      push @headers, " - [$name](#$link)";
+    }
+    elsif( $outside_fence && $_ =~ /^## (.+)$/ ) {
+      $link = clean_toc_link $1;
       push @headers, "   - [$1](#$link)";
     }
-    elsif( $_ =~ /^### (.+)$/ ) {
-      $link = clean_link $1;
+    elsif( $outside_fence && $_ =~ /^### (.+)$/ ) {
+      $link = clean_toc_link $1;
       push @headers, "     - [$1](#$link)";
     }
   }
-
-  say Dumper \@headers;
 
   return join "\n", @headers;
 }

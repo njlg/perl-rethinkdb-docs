@@ -8,9 +8,6 @@ description: Rethinkdb::Query::Table is a type of query that represents a table 
 
 Rethinkdb::Query::Table is a type of query that represents a table in a database. This classes contains methods to interact with said table.
 
-
-
-
 ## ATTRIBUTES
 
 [Rethinkdb::Query::Table](/packages/rethinkdb/query/table) implements the following attributes.

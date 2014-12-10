@@ -6,11 +6,6 @@ description:
 ---
 # Rethinkdb::Query::Datum
 
-
-
-
-
-
 ## DESCRIPTION
 
 [Rethinkdb::Query::Datum](/packages/rethinkdb/query/datum) is the smallest building block in the RethinkDB

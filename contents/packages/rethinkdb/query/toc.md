@@ -1,4 +1,4 @@
- - [Rethinkdb::Query](#rethinkdb/query)
+ - [Rethinkdb::Query](#rethinkdb-query)
    - [ATTRIBUTES](#attributes)
      - [args](#args)
      - [optargs](#optargs)

@@ -1,4 +1,4 @@
-Unless otherwise noted: Copyright &copy; 2013-2014, Nathan Levin-Greenhaw
+Unless otherwise noted: Copyright &copy; 2013-2014, [Nathan Levin-Greenhaw](http://njlg.info)
 
 A lot of the above documentation herein was taken from the
 [official documentation](http://rethinkdb.com/api/).

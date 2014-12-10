@@ -1,4 +1,4 @@
- - [Rethinkdb::IO](#rethinkdb/io)
+ - [Rethinkdb::IO](#rethinkdb-io)
    - [ATTRIBUTES](#attributes)
      - [host](#host)
      - [port](#port)

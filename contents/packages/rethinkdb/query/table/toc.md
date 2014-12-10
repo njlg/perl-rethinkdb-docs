@@ -1,4 +1,4 @@
- - [Rethinkdb::Query::Table](#rethinkdb/query/table)
+ - [Rethinkdb::Query:: Table](#rethinkdb-query-table)
    - [ATTRIBUTES](#attributes)
      - [name](#name)
    - [METHODS](#methods)

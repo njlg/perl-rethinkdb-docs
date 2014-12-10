@@ -27,6 +27,7 @@ module.exports = (env, callback) ->
     ### A page has a number and a list of packages ###
 
     constructor: (@filepath, @content) ->
+      @getContent()
 
     getFilename: ->
       # console.log @filepath.relative.replace('index.md', 'toc.html')
@@ -84,8 +85,6 @@ module.exports = (env, callback) ->
       # simple view to pass packages and pagenum to the paginator template
       # note that this function returns a funciton
 
-      @getContent()
-
       # get the pagination template
       template = templates[options.template]
       if not template?
@@ -114,7 +113,12 @@ module.exports = (env, callback) ->
     # do _not_ modify the tree directly inside a generator, consider it read-only
     rv = {toc: {}}
 
-    rv.toc[page.filepath.relative] = new PackagePage(page.filepath, page) for page in pages
+    for page in pages
+      pp = new PackagePage(page.filepath, page)
+      render = pp.getView()
+      render()
+      rv.toc[page.filepath.relative] = pp
+      page.toc = pp
 
     # console.dir rv.toc
 

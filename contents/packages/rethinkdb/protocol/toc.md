@@ -1,4 +1,4 @@
- - [Rethinkdb::Protocol](#rethinkdb/protocol)
+ - [Rethinkdb::Protocol](#rethinkdb-protocol)
    - [ATTRIBUTES](#attributes)
      - [backtrace](#backtrace)
      - [datum](#datum)
