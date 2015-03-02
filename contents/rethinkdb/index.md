@@ -556,11 +556,29 @@ Parse a JSON string on the server.
 
 ```perl
 r->table('posts')->insert(r->http('httpbin.org/get'))->run;
+r->http('http://httpbin.org/post', {
+  method => 'POST',
+  data   => {
+    player => 'Bob',
+    game   => 'tic tac toe'
+  }
+})->run($conn);
 
 ```
 
 Retrieve data from the specified URL over HTTP. The return type depends on the
-`result_format` option, which checks the `Content-Type` of the response by default.
+`result_format` option, which checks the `Content-Type` of the response by
+default.
+
+### uuid
+
+```perl
+r->uuid->run;
+
+```
+
+Return a UUID (universally unique identifier), a string that can be used as a
+unique ID.
 
 ### asc
 
@@ -592,7 +610,7 @@ Helper literal since Perl does not have a `true` literal.
 ### false
 
 ```perl
-r->true->run;
+r->false->run;
 
 ```
 

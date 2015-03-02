@@ -47,6 +47,7 @@
      - [js](#js)
      - [json](#json)
      - [http](#http)
+     - [uuid](#uuid)
      - [asc](#asc)
      - [desc](#desc)
      - [true](#true)

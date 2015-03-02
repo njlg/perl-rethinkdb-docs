@@ -7,6 +7,7 @@
      - [index_create](#index_create)
      - [index_drop](#index_drop)
      - [index_list](#index_list)
+     - [index_rename](#index_rename)
      - [index_status](#index_status)
      - [index_wait](#index_wait)
      - [changes](#changes)

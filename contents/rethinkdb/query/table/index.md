@@ -81,6 +81,18 @@ r->table('marvel')->index_list->run;
 
 List all the secondary indexes of this table.
 
+### index_rename
+
+```perl
+r->table('marvel')->index_rename('heroId', 'awesomeId')->run;
+
+```
+
+Rename an existing secondary index on a table. If the optional argument
+`overwrite` is specified as `true`, a previously existing index with the new
+name will be deleted and the index will be renamed. If `overwrite` is `false`
+(the default) an error will be raised if the new index name already exists.
+
 ### index_status
 
 ```perl
