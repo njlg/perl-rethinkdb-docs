@@ -350,7 +350,7 @@ foreach(@files) {
   $content = templatize($pages[$#pages], $content, $description, $subtitle, $template);
 
   $filename = $_;
-  $filename =~ s!/Users/nathan/source/perl-rethinkdb/lib/!contents/packages/!;
+  $filename =~ s!/Users/nathan/source/perl-rethinkdb/lib/!contents/!;
   $filename =~ s!.pm$!/index.md!;
   $filename = lc $filename;
   $markdown = $filename;

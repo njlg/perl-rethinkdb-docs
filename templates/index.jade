@@ -8,7 +8,7 @@ block content
     article.package.intro
       header
         h2
-          a(href=package.url)= package.title
+          a(href=package.url.slice(1))= package.title
       section.content
         if package.metadata && package.metadata.description
           | !{ typogr(package.metadata.description).typogrify() }

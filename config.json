@@ -1,6 +1,6 @@
 {
   "locals": {
-    "url": "http://localhost:8080",
+    "url": "http://njlg.github.io/perl-rethinkdb",
     "name": "Perl RethinkDB",
     "owner": "Nathan Levin-Greenhaw",
     "description": "A Pure Perl RethinkDB Driver"
