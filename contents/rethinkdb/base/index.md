@@ -33,7 +33,7 @@ say $rawr->tap(sub { $_->friend->name('Tacgnol') })->mice;
 
 ## DESCRIPTION
 
-[Rethinkdb::Base](/packages/rethinkdb/base) is a simple base class.
+[Rethinkdb::Base](/perl-rethinkdb/rethinkdb/base) is a simple base class.
 
 ```perl
 ## Automatically enables "strict", "warnings", "utf8" and Perl 5.10 features
@@ -78,7 +78,7 @@ sub has { Rethinkdb::Base::attr(__PACKAGE__, @_) }
 
 ## FUNCTIONS
 
-[Rethinkdb::Base](/packages/rethinkdb/base) exports the following functions if imported with the `-base`
+[Rethinkdb::Base](/perl-rethinkdb/rethinkdb/base) exports the following functions if imported with the `-base`
 flag or a base class.
 
 ### has
@@ -97,7 +97,7 @@ Create attributes for hash-based objects, just like the `attr` method.
 
 ## METHODS
 
-[Rethinkdb::Base](/packages/rethinkdb/base) implements the following methods.
+[Rethinkdb::Base](/perl-rethinkdb/rethinkdb/base) implements the following methods.
 
 ### new
 
@@ -159,4 +159,4 @@ Copyright &copy; 2008-2013, Sebastian Riedel.
 
 ## SEE ALSO
 
-[Mojo::Base](/packages/mojo/base), [Mojolicious](/packages/mojolicious), [http://mojolicio.us](http://mojolicio.us).
+[Mojo::Base](http://metacpan.org/pod/Mojo::Base), [Mojolicious](http://metacpan.org/pod/Mojolicious), [http://mojolicio.us](http://mojolicio.us).

@@ -8,6 +8,7 @@
   "plugins": [
     "./plugins/packages.coffee"
   ],
+  "baseUrl": "/perl-rethinkdb/",
   "require": {
     "moment": "moment",
     "_": "underscore",

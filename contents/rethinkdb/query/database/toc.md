@@ -9,4 +9,7 @@
      - [table_create](#table_create)
      - [table_drop](#table_drop)
      - [table_list](#table_list)
-   - [SEE ALSO](#see-also)
+     - [config](#config)
+     - [rebalance](#rebalance)
+     - [reconfigure](#reconfigure)
+     - [wait](#wait)

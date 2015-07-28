@@ -10,7 +10,7 @@ Rethinkdb::Query::Database is a type of query that represents a database. This c
 
 ## ATTRIBUTES
 
-[Rethinkdb::Query::Database](/packages/rethinkdb/query/database) implements the following attributes.
+[Rethinkdb::Query::Database](/perl-rethinkdb/rethinkdb/query/database) implements the following attributes.
 
 ### name
 
@@ -110,6 +110,47 @@ r->db('test')->table_list->run;
 
 List all table names in a database. The result is a list of strings.
 
-## SEE ALSO
+### config
 
-[Rethinkdb](/packages/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)
+```perl
+r->db('test')->config->run;
+
+```
+
+Query (read and/or update) the configurations for individual databases.
+
+### rebalance
+
+```perl
+r->db('test')->rebalance->run;
+
+```
+
+Rebalances the shards of all tables in the database.
+
+### reconfigure
+
+```perl
+r->db('test')->reconfigure({ shards => 2, replicas => 1 })->run;
+r->db('test')->reconfigure(
+  {
+    shards              => 2,
+    replicas            => { wooster => 1, wayne => 1 },
+    primary_replica_tag => 'wooster'
+  }
+)->run;
+
+```
+
+Reconfigure all table's sharding and replication.
+
+### wait
+
+```perl
+r->db('test')->wait->run;
+
+```
+
+Wait for all the tables in a database to be ready. A table may be
+temporarily unavailable after creation, rebalancing or reconfiguring.
+The ["wait"](#wait) command blocks until the given database is fully up to date.

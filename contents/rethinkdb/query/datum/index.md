@@ -8,13 +8,13 @@ description:
 
 ## DESCRIPTION
 
-[Rethinkdb::Query::Datum](/packages/rethinkdb/query/datum) is the smallest building block in the RethinkDB
+[Rethinkdb::Query::Datum](/perl-rethinkdb/rethinkdb/query/datum) is the smallest building block in the RethinkDB
 Query Language. A datum can be thought of as a primative. A datum can have the
 following types: `null`, `number`, `string`, or `boolean`.
 
 ## ATTRIBUTES
 
-[Rethinkdb::Query::Datum](/packages/rethinkdb/query/datum) implements the following attributes.
+[Rethinkdb::Query::Datum](/perl-rethinkdb/rethinkdb/query/datum) implements the following attributes.
 
 ### data
 
@@ -38,4 +38,4 @@ The actual RQL (RethinkDB Query Language) datum type of this instance.
 
 ## SEE ALSO
 
-[Rethinkdb](/packages/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)
+[Rethinkdb](/perl-rethinkdb/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)

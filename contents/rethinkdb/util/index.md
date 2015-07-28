@@ -10,4 +10,4 @@ This module contains internal utilities used by the RethinkDB perl driver.
 
 ## SEE ALSO
 
-[Rethinkdb](/packages/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)
+[Rethinkdb](/perl-rethinkdb/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)

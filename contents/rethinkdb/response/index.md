@@ -24,7 +24,7 @@ say $res->backtrace;
 
 ## ATTRIBUTES
 
-[Rethinkdb::Response](/packages/rethinkdb/response) implements the following attributes.
+[Rethinkdb::Response](/perl-rethinkdb/rethinkdb/response) implements the following attributes.
 
 ### type
 
@@ -104,4 +104,4 @@ error.
 
 ## SEE ALSO
 
-[Rethinkdb](/packages/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)
+[Rethinkdb](/perl-rethinkdb/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)

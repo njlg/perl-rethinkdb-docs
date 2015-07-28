@@ -1,4 +1,4 @@
-#!/bin/evn perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
@@ -13,24 +13,27 @@ use Pod::Simple::XHTML;
 use Pod::Markdown;
 
 my @files;
-finddepth(sub {
-    return if($_ eq '.' || $_ eq '..');
-    return if($_ !~ /.pm$/ );
+finddepth(
+  sub {
+    return if ( $_ eq '.' || $_ eq '..' );
+    return if ( $_ !~ /.pm$/ );
     push @files, $File::Find::name;
-}, '/Users/nathan/source/perl-rethinkdb/lib');
+  },
+  '/Users/nlevingreenhaw/source/perl-rethinkdb/lib'
+);
 
 sub get_module_name {
   my $content = shift;
-  my $syn = q{};
+  my $syn     = q{};
 
-  if( $content =~ /# NAME\n\n([^\n]+)/ ) {
+  if ( $content =~ /# NAME\n\n([^\n]+)/ ) {
     my @bits = split ' - ', $1;
     $syn = $bits[1];
     $syn =~ s/^\s*//g;
     $syn =~ s/\s*$//g;
     $syn =~ s/\n/ /g;
 
-    return ($bits[0], $syn) if wantarray;
+    return ( $bits[0], $syn ) if wantarray;
   }
 
   return $syn;
@@ -54,9 +57,9 @@ sub remove_synopsis {
 
 sub get_description {
   my $content = shift;
-  my $desc = q{};
+  my $desc    = q{};
 
-  if( $content =~ /# DESCRIPTION\n([^#`]+)\n#/ ) {
+  if ( $content =~ /# DESCRIPTION\n([^#`]+)\n#/ ) {
     $desc = $1;
     $desc =~ s/^\s*//g;
     $desc =~ s/\s*$//g;
@@ -90,13 +93,13 @@ sub downgrade_headers {
 sub fix_code_blocks {
   my $content = shift;
 
-  my $start = 0;
-  my @lines = split "\n", $content;
+  my $start  = 0;
+  my @lines  = split "\n", $content;
   my @better = ();
-  foreach(@lines) {
-    if( $_ =~ /^    (.+)$/ ) {
+  foreach (@lines) {
+    if ( $_ =~ /^    (.+)$/ ) {
       my $code = $1;
-      if( !$start ) {
+      if ( !$start ) {
         $start = 1;
         push @better, '```perl';
         push @better, $code;
@@ -105,7 +108,7 @@ sub fix_code_blocks {
         push @better, $code;
       }
     }
-    elsif( $start && $_ ) {
+    elsif ( $start && $_ ) {
       $start = 0;
       push @better, '```';
       push @better, '';
@@ -122,9 +125,24 @@ sub fix_code_blocks {
 sub clean_link {
   my $link = shift;
 
-  $link = lc $link;
-  $link =~ s!::!/!g;
-  $link =~ s! !-!g;
+  if ( $link =~ /\/perl-rethinkdb\/Rethinkdb/ ) {
+    $link = lc $link;
+    $link =~ s!::!/!g;
+    $link =~ s! !-!g;
+  }
+  else {
+    $link =~ s!/perl-rethinkdb/!http://metacpan.org/pod/!g;
+  }
+
+  return $link;
+}
+
+sub clean_anchor {
+  my $link = shift;
+
+  say "\tclean_anchor $link";
+
+  # $link =~ s!\(#!(/#!g;
 
   return $link;
 }
@@ -142,7 +160,12 @@ sub clean_toc_link {
 sub fix_links {
   my $content = shift;
 
-  $content =~ s!(\(/packages/[^)]+\))!clean_link($1)!ge;
+  $content =~ s!(\(/perl-rethinkdb/[^)]+\))!clean_link($1)!ge;
+  $content =~ s!(\(#[^)]+\))!clean_anchor($1)!ge;
+
+  if($content =~ /minval/ ) {
+    say $content;
+  }
 
   return $content;
 }
@@ -156,10 +179,10 @@ sub fix_underscores {
 }
 
 sub convert_to_markdown {
-  my $file = shift;
+  my $file    = shift;
   my $content = read_file $file;
 
-  if( 0 ) {
+  if (0) {
     $content =~ s/package[.\W\w]*=encoding utf8\n//g;
     $content =~ s/=cut\n//g;
 
@@ -180,8 +203,8 @@ sub convert_to_markdown {
     $content =~ s/\(C\)/&copy;/g;
   }
 
-  my $parser = Pod::Markdown->new(perldoc_url_prefix => '/packages/');
-  $parser->output_string(\(my $output));
+  my $parser = Pod::Markdown->new( perldoc_url_prefix => '/perl-rethinkdb/' );
+  $parser->output_string( \( my $output ) );
   $parser->parse_string_document("$content");
 
   # add cool copyright symbol
@@ -191,7 +214,7 @@ sub convert_to_markdown {
   $output = fix_code_blocks $output;
 
   # clean up format for web
-  my ($module, $subtitle) = get_module_name $output;
+  my ( $module, $subtitle ) = get_module_name $output;
   my $description = get_description $output;
 
   $output = remove_module_name $output;
@@ -201,34 +224,32 @@ sub convert_to_markdown {
   $output = fix_links $output;
   $output = fix_underscores $output;
 
-  if( $file =~ /Rethinkdb.pm$/ ) {
-    say 'CLEANING!!!';
+  if ( $file =~ /Rethinkdb.pm$/ ) {
     $output =~ s/## AUTHOR[^#]+//g;
     $output =~ s/## COPYRIGHT AND LICENSE[^#]+//g;
-
-    say $output;
   }
 
-  # my $start = qq{# $module <small>$subtitle</small>};
   my $start = qq{# $module};
   $start .= "\n\n";
   $start .= $description;
   $start .= "\n\n";
   $start .= $output;
 
-  return ($start, $description, $subtitle);
+  say "desc: $description";
+
+  return ( $start, $description, $subtitle );
 }
 
 sub build_navigation {
   my $content = shift;
-  my @lines = split '\n', $content;
+  my @lines   = split '\n', $content;
   my @headers = grep /^#/, @lines;
 
   my @nav;
   my $open = 0;
-  foreach(@headers) {
-    if( $_ =~ /^# (.+)/ ) {
-      if( $open ) {
+  foreach (@headers) {
+    if ( $_ =~ /^# (.+)/ ) {
+      if ($open) {
         push @nav, q{</ul>};
         push @nav, q{</li>};
         $open = 0;
@@ -240,8 +261,8 @@ sub build_navigation {
 
       push @nav, qq{<li><a href="#$href">$text</a></li>};
     }
-    elsif( $_ =~ /^## (.+)/ ) {
-      if( !$open ) {
+    elsif ( $_ =~ /^## (.+)/ ) {
+      if ( !$open ) {
         $nav[$#nav] =~ s!</li>$!!;
         $open = 1;
         push @nav, q{<ul class="nav">};
@@ -251,7 +272,7 @@ sub build_navigation {
     }
   }
 
-  if( $open ) {
+  if ($open) {
     push @nav, q{</ul>};
   }
 
@@ -260,9 +281,9 @@ sub build_navigation {
 
 sub makeDirectory {
   my $fn = shift;
-  if( ! -f $fn ) {
-    my ($name, $dir) = fileparse $fn;
-    if( ! -d $dir ) {
+  if ( !-f $fn ) {
+    my ( $name, $dir ) = fileparse $fn;
+    if ( !-d $dir ) {
       make_path $dir or die "Failed to create path: $dir";
     }
   }
@@ -271,7 +292,7 @@ sub makeDirectory {
 sub get_short_description {
   my $desc = shift || q{};
 
-  if( $desc =~ /^([^.]+)[.]\s+/ ) {
+  if ( $desc =~ /^([^.]+)[.]\s+/ ) {
     $desc = "$1.";
   }
 
@@ -279,16 +300,16 @@ sub get_short_description {
 }
 
 sub templatize {
-  my ($stub, $markdown, $description, $subtitle, $template) = @_;
+  my ( $stub, $markdown, $description, $subtitle, $template ) = @_;
 
   my $title = $stub;
   $title =~ s!/!::!g;
 
   $description = get_short_description $description;
 
-  $template =~ s!{{title}}!$title!;
-  $template =~ s!{{description}}!$description!;
-  $template =~ s!{{synopsis}}!$subtitle!;
+  $template =~ s!\{\{title\}\}!$title!;
+  $template =~ s!\{\{description\}\}!$description!;
+  $template =~ s!\{\{synopsis\}\}!$subtitle!;
 
   # remove any extra lines
   $markdown =~ s/\n\n+/\n\n/g;
@@ -299,29 +320,29 @@ sub templatize {
 sub build_toc {
   my $contents = shift;
 
-  my $link = q{};
+  my $link          = q{};
   my $outside_fence = 1;
-  my @lines = split "\n", $contents;
-  my @headers = ();
+  my @lines         = split "\n", $contents;
+  my @headers       = ();
 
-  foreach(@lines) {
-    if( $_ =~ /^```perl/ ) {
+  foreach (@lines) {
+    if ( $_ =~ /^```perl/ ) {
       $outside_fence = 0;
     }
-    elsif( $_ =~ /^```/ ) {
+    elsif ( $_ =~ /^```/ ) {
       $outside_fence = 1;
     }
-    elsif( $outside_fence && $_ =~ /^# (.+)$/ ) {
+    elsif ( $outside_fence && $_ =~ /^# (.+)$/ ) {
       $link = clean_toc_link $1;
       my $name = $1;
       $name =~ s/Rethinkdb::Query::/Rethinkdb::Query:: /;
       push @headers, " - [$name](#$link)";
     }
-    elsif( $outside_fence && $_ =~ /^## (.+)$/ ) {
+    elsif ( $outside_fence && $_ =~ /^## (.+)$/ ) {
       $link = clean_toc_link $1;
       push @headers, "   - [$1](#$link)";
     }
-    elsif( $outside_fence && $_ =~ /^### (.+)$/ ) {
+    elsif ( $outside_fence && $_ =~ /^### (.+)$/ ) {
       $link = clean_toc_link $1;
       push @headers, "     - [$1](#$link)";
     }
@@ -339,18 +360,22 @@ my $markdown;
 my $description;
 my $subtitle;
 my @pages;
-foreach(@files) {
+foreach (@files) {
+
   # save package name
-  if( $_ =~ /\/Users\/nathan\/source\/perl-rethinkdb\/lib\/(.+)\.pm$/ ) {
+  if (
+    $_ =~ /\/Users\/nlevingreenhaw\/source\/perl-rethinkdb\/lib\/(.+)\.pm$/ )
+  {
     push @pages, $1;
   }
 
   # create markdowns
-  ($content, $description, $subtitle) = convert_to_markdown $_;
-  $content = templatize($pages[$#pages], $content, $description, $subtitle, $template);
+  ( $content, $description, $subtitle ) = convert_to_markdown $_;
+  $content = templatize( $pages[$#pages], $content, $description, $subtitle,
+    $template );
 
   $filename = $_;
-  $filename =~ s!/Users/nathan/source/perl-rethinkdb/lib/!contents/!;
+  $filename =~ s!/Users/nlevingreenhaw/source/perl-rethinkdb/lib/!contents/!;
   $filename =~ s!.pm$!/index.md!;
   $filename = lc $filename;
   $markdown = $filename;
@@ -386,7 +411,7 @@ foreach(@files) {
 }
 
 my $menu = q{};
-foreach(@pages) {
+foreach (@pages) {
   my $name = $_;
   my $text = $name;
   my $link = lc $name;
@@ -395,7 +420,7 @@ foreach(@pages) {
   $text =~ s!/!::!g;
 
   $menu .= "- [$text]($link)\n";
-};
+}
 
 $filename = 'contents/toc.md';
 say "writing $filename";

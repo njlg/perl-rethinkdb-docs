@@ -21,7 +21,7 @@
      - [limit](#limit)
      - [slice](#slice)
      - [nth](#nth)
-     - [indexes_of](#indexes_of)
+     - [offsets_of](#offsets_of)
      - [is_empty](#is_empty)
      - [union](#union)
      - [sample](#sample)

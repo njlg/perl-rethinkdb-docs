@@ -50,5 +50,8 @@
      - [uuid](#uuid)
      - [asc](#asc)
      - [desc](#desc)
+     - [wait](#wait)
+     - [minval](#minval)
+     - [maxval](#maxval)
      - [true](#true)
      - [false](#false)

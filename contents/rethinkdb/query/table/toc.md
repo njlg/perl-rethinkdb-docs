@@ -16,3 +16,8 @@
      - [get](#get)
      - [get_all](#get_all)
      - [between](#between)
+     - [config](#config)
+     - [rebalance](#rebalance)
+     - [reconfigure](#reconfigure)
+     - [status](#status)
+     - [wait](#wait)

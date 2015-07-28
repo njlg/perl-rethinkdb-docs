@@ -10,7 +10,7 @@ Rethinkdb::Query::Table is a type of query that represents a table in a database
 
 ## ATTRIBUTES
 
-[Rethinkdb::Query::Table](/packages/rethinkdb/query/table) implements the following attributes.
+[Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table) implements the following attributes.
 
 ### name
 
@@ -24,7 +24,7 @@ The name of the table.
 
 ## METHODS
 
-[Rethinkdb::Query::Table](/packages/rethinkdb/query/table) implements the following methods.
+[Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table) implements the following methods.
 
 ### create
 
@@ -188,3 +188,58 @@ is in the specified range (it uses the primary key by default). `left_bound`
 or `right_bound` may be set to open or closed to indicate whether or not to
 include that endpoint of the range (by default, `left_bound` is closed and
 `right_bound` is open).
+
+### config
+
+```perl
+r->table('marvel')->config->run;
+
+```
+
+Query (read and/or update) the configurations for individual tables.
+
+### rebalance
+
+```perl
+r->table('marvel')->rebalance->run;
+
+```
+
+Rebalances the shards of a table.
+
+### reconfigure
+
+```perl
+r->table('marvel')->reconfigure({ shards => 2, replicas => 1 })->run;
+r->table('marvel')->reconfigure(
+  {
+    shards              => 2,
+    replicas            => { wooster => 1, wayne => 1 },
+    primary_replica_tag => 'wooster'
+  }
+)->run;
+
+```
+
+Reconfigure a table's sharding and replication.
+
+### status
+
+```perl
+r->table('marvel')->status->run;
+
+```
+
+Return the status of a table. The return value is an object providing
+information about the table's shards, replicas and replica readiness states
+
+### wait
+
+```perl
+r->table('marvel')->wait->run;
+
+```
+
+Wait for a table to be ready. A table may be temporarily unavailable
+after creation, rebalancing or reconfiguring. The ["wait"](#wait) command
+blocks until the given table is fully up to date.

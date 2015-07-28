@@ -25,7 +25,7 @@ module.exports = (env, callback) ->
     contents[options.packages]['query']._.directories.map (item) ->
       packages.push item.index
 
-    console.dir packages
+    # console.dir packages
 
     # skip packages that does not have a template associated
     packages = packages.filter (item) -> item.template isnt 'none'
@@ -41,6 +41,7 @@ module.exports = (env, callback) ->
     ### A page has a number and a list of packages ###
 
     constructor: (@packages) ->
+      console.dir @packages
 
     getFilename: ->
       options.first

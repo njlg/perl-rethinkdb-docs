@@ -16,7 +16,7 @@ $p->term->termType->get_all;
 
 ## ATTRIBUTES
 
-[Rethinkdb::Protocol](/packages/rethinkdb/protocol) implements the following attributes.
+[Rethinkdb::Protocol](/perl-rethinkdb/rethinkdb/protocol) implements the following attributes.
 
 ### backtrace
 
@@ -48,4 +48,4 @@ Quick access to the `versionDummy` section of the protocol.
 
 ## SEE ALSO
 
-[Rethinkdb](/packages/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)
+[Rethinkdb](/perl-rethinkdb/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)

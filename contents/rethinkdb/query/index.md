@@ -10,7 +10,7 @@ Rethinkdb::Query is a type of query.
 
 ## ATTRIBUTES
 
-[Rethinkdb::Query](/packages/rethinkdb/query) implements the following attributes.
+[Rethinkdb::Query](/perl-rethinkdb/rethinkdb/query) implements the following attributes.
 
 ### args
 
@@ -34,7 +34,7 @@ The optional arguments for this instance of a query.
 
 ## METHODS
 
-[Rethinkdb::Query](/packages/rethinkdb/query) implements the following methods.
+[Rethinkdb::Query](/perl-rethinkdb/rethinkdb/query) implements the following methods.
 
 ### new
 
@@ -161,8 +161,8 @@ r->table('marvel')->eq_join('main_dc_collaborator',
 
 ```
 
-Used to _zip_ up the result of a join by merging the _right_ fields into
-_left_ fields of each member of the sequence.
+Used to zip up the result of a join by merging the right fields into
+left fields of each member of the sequence.
 
 ### map
 
@@ -211,12 +211,12 @@ r->table('posts')->order_by({index => r->desc('date')})->run;
 ```
 
 Sort the sequence by document values of the given key(s). To specify the
-ordering, wrap the attribute with either [`r->asc`](/packages/rethinkdb#asc) or
-[`r->desc`](/packages/rethinkdb#desc) (defaults to ascending).
+ordering, wrap the attribute with either [`r->asc`](/perl-rethinkdb/rethinkdb#asc) or
+[`r->desc`](/perl-rethinkdb/rethinkdb#desc) (defaults to ascending).
 
 Sorting without an index requires the server to hold the sequence in memory,
 and is limited to 100,000 documents. Sorting with an index can be done on
-arbitrarily large tables, or after a ["between" in Rethinkdb::Query::Table](/packages/rethinkdb/query/table#between) command
+arbitrarily large tables, or after a ["between" in Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table#between) command
 using the same index.
 
 ### skip
@@ -255,10 +255,10 @@ r->expr([1,2,3])->nth(1)->run;
 
 Get the nth element of a sequence.
 
-### indexes_of
+### offsets_of
 
 ```perl
-r->expr(['a','b','c'])->indexes_of('c')->run;
+r->expr(['a','b','c'])->offsets_of('c')->run;
 
 ```
 
@@ -617,10 +617,10 @@ r->expr('foo,bar,bax')->split(",", 1)->run;
 Splits a string into substrings. Splits on whitespace when called with no
 arguments. When called with a separator, splits on that separator. When called
 with a separator and a maximum number of splits, splits on that separator at
-most `max_splits` times. (Can be called with None as the separator if you want
-to split on whitespace while still specifying `max_splits`.)
+most `max_splits` times. (Can be called with `undef` as the separator if you
+want to split on whitespace while still specifying `max_splits`.)
 
-Mimics the behavior of Python's string.split in edge cases, except for
+Mimics the behavior of Python's `string.split` in edge cases, except for
 splitting on the empty string, which instead produces an array of
 single-character strings.
 
@@ -694,7 +694,7 @@ r->expr(r->true)->and(r->false)->run;
 
 ```
 
-Compute the logical "and" of two or more values.
+Compute the logical `and` of two or more values.
 
 ### or
 
@@ -703,7 +703,7 @@ r->expr(r->true)->or(r->false)->run;
 
 ```
 
-Compute the logical "or" of two or more values.
+Compute the logical `or` of two or more values.
 
 ### eq
 
@@ -854,8 +854,8 @@ r->table('users')->filter(
 ```
 
 Return the month of a time object as a number between 1 and 12. For your
-convenience, the terms [`r->january`](/packages/rethinkdb#january),
-[`r->february`](/packages/rethinkdb#february) etc. are defined and map to the
+convenience, the terms [`r->january`](/perl-rethinkdb/rethinkdb#january),
+[`r->february`](/perl-rethinkdb/rethinkdb#february) etc. are defined and map to the
 appropriate integer.
 
 ### day
@@ -1024,4 +1024,4 @@ Get information about a ReQL value.
 
 ## SEE ALSO
 
-[Rethinkdb](/packages/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)
+[Rethinkdb](/perl-rethinkdb/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)

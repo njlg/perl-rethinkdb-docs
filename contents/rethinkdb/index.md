@@ -25,7 +25,7 @@ r->table('agents')->get('007')->update(
 
 ## ATTRIBUTES
 
-[Rethinkdb](/packages/rethinkdb) implements the following attributes.
+[Rethinkdb](/perl-rethinkdb/rethinkdb) implements the following attributes.
 
 ### io
 
@@ -35,8 +35,8 @@ r->io(Rethinkdb::IO->new);
 
 ```
 
-The `io` attribute returns the current [Rethinkdb::IO](/packages/rethinkdb/io) instance that
-[Rethinkdb](/packages/rethinkdb) is currently set to use. If `io` is not set by the time `run`
+The `io` attribute returns the current [Rethinkdb::IO](/perl-rethinkdb/rethinkdb/io) instance that
+[Rethinkdb](/perl-rethinkdb/rethinkdb) is currently set to use. If `io` is not set by the time `run`
 is called, then an error will occur.
 
 ### term
@@ -51,7 +51,7 @@ protocol.
 
 ## METHODS
 
-[Rethinkdb](/packages/rethinkdb) inherits all methods from [Rethinkdb::Base](/packages/rethinkdb/base) and implements the
+[Rethinkdb](/perl-rethinkdb/rethinkdb) inherits all methods from [Rethinkdb::Base](/perl-rethinkdb/rethinkdb/base) and implements the
 following methods.
 
 ### r
@@ -65,7 +65,7 @@ my $conn = r->connect;
 `r` is a factory method to begin a new Rethink DB query. The `r` sub is
 exported in the importer's namespace so that it can be used as short-hand;
 similar to what the official drivers provide. In addition, to creating a
-new instance, if a [Rethinkdb::IO](/packages/rethinkdb/io) connection has been repl-ized, then that
+new instance, if a [Rethinkdb::IO](/perl-rethinkdb/rethinkdb/io) connection has been repl-ized, then that
 connection will be set via `io` in the new instance.
 
 ### connect
@@ -177,7 +177,7 @@ r->and(true, false)->run;
 
 ```
 
-Compute the logical "and" of two or more values.
+Compute the logical `and` of two or more values.
 
 ### or
 
@@ -186,7 +186,7 @@ r->or(true, false)->run;
 
 ```
 
-Compute the logical "or" of two or more values.
+Compute the logical `or` of two or more values.
 
 ### random
 
@@ -294,7 +294,7 @@ r->table('users')->filter(
 
 ```
 
-[thursday](/packages/thursday) is a literal day of the week for comparisions.
+["thursday"](#thursday) is a literal day of the week for comparisions.
 
 ### friday
 
@@ -472,7 +472,7 @@ r->table('people')->get_all(r->args(['Alice', 'Bob']))->run;
 
 `r->args` is a special term that's used to splice an array of arguments into
 another term. This is useful when you want to call a variadic term such as
-["get_all" in Rethinkdb::Query::Table](/packages/rethinkdb/query/table#get_all) with a set of arguments produced at runtime.
+["get_all" in Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table#get_all) with a set of arguments produced at runtime.
 
 ### do
 
@@ -597,6 +597,44 @@ r->table('marvel')->order_by(r->desc('enemies_vanquished'))->run;
 ```
 
 Specifies that a column should be ordered in descending order.
+
+### wait
+
+```perl
+r->wait->run;
+
+```
+
+Wait on all the tables in the default database (set with the ["connect"](#connect)
+command's `db` parameter, which defaults to `test`). A table may be
+temporarily unavailable after creation, rebalancing or reconfiguring. The
+["wait"](#wait) command blocks until the given all the tables in database is fully up
+to date.
+
+### minval
+
+```perl
+r->table('marvel')->between( r->minval, 7 )->run;
+
+```
+
+The special constants ["minval"](#minval) is used for specifying a boundary, which
+represent "less than any index key". For instance, if you use ["minval"](#minval) as the
+lower key, then ["between" in Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table#between) will return all documents
+whose primary keys (or indexes) are less than the specified upper key.
+
+### maxval
+
+```perl
+r->table('marvel')->between( 8, r->maxval )->run;
+
+```
+
+The special constants ["maxval"](#maxval) is used for specifying a boundary, which
+represent "greater than any index key". For instance, if you use ["maxval"](#maxval) as
+the upper key, then ["between" in Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table#between) will return all
+documents whose primary keys (or indexes) are greater than the specified lower
+key.
 
 ### true
 
