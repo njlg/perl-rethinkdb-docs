@@ -580,6 +580,83 @@ r->uuid->run;
 Return a UUID (universally unique identifier), a string that can be used as a
 unique ID.
 
+### circle
+
+```perl
+r->circle( [ -122.423246, 37.770378359 ], 10, { unit => 'mi' } )
+
+```
+
+Construct a circular line or polygon. A circle in RethinkDB is a polygon or
+line approximating a circle of a given radius around a given center,
+consisting of a specified number of vertices (default 32).
+
+### distance
+
+```perl
+r->distance(
+  r->point( -122.423246, 37.779388 ),
+  r->point( -117.220406, 32.719464 ),
+  { unit => 'km' }
+)->run;
+
+```
+
+Compute the distance between a point and another geometry object. At least
+one of the geometry objects specified must be a point.
+
+### geojson
+
+```perl
+r->geojson(
+  { 'type' => 'Point', 'coordinates' => [ -122.423246, 37.779388 ] } )
+
+```
+
+Convert a [GeoJSON](http://geojson.org/) object to a ReQL geometry object.
+
+### line
+
+```perl
+r->line( [ -122.423246, 37.779388 ], [ -121.886420, 37.329898 ] )
+
+```
+
+Construct a geometry object of type Line. The line can be specified in one of
+two ways:
+(1) Two or more two-item arrays, specifying latitude and longitude numbers of
+the line's vertices;
+(2) Two or more ["point"](#point) objects specifying the line's vertices.
+
+### point
+
+```perl
+r->point( -122.423246, 37.779388 )
+
+```
+
+Construct a geometry object of type Point. The point is specified by two
+floating point numbers, the longitude (-180 to 180) and latitude (-90 to 90)
+of the point on a perfect sphere.
+
+### polygon
+
+```perl
+r->polygon(
+  [ -122.423246, 37.779388 ],
+  [ -122.423246, 37.329898 ],
+  [ -121.886420, 37.329898 ],
+  [ -121.886420, 37.779388 ]
+)
+
+```
+
+Construct a geometry object of type Polygon. The Polygon can be specified in
+one of two ways:
+(1) Three or more two-item arrays, specifying longitude and latitude numbers
+of the polygon's vertices;
+(2) Three or more ["point"](#point) objects specifying the polygon's vertices.
+
 ### asc
 
 ```perl
@@ -635,6 +712,37 @@ represent "greater than any index key". For instance, if you use ["maxval"](#max
 the upper key, then ["between" in Rethinkdb::Query::Table](/perl-rethinkdb/rethinkdb/query/table#between) will return all
 documents whose primary keys (or indexes) are greater than the specified lower
 key.
+
+### round
+
+```perl
+r->round(-12.567)->run;
+
+```
+
+Rounds the given value to the nearest whole integer. For example, values of
+1.0 up to but not including 1.5 will return 1.0, similar to ["floor"](#floor); values
+of 1.5 up to 2.0 will return 2.0, similar to ["ceil"](#ceil).
+
+### ceil
+
+```perl
+r->ceil(-12.567)->run;
+
+```
+
+Rounds the given value up, returning the smallest integer value greater than
+or equal to the given value (the value's ceiling).
+
+### floor
+
+```perl
+r->floor(-12.567)->run;
+
+```
+
+Rounds the given value down, returning the largest integer value less than or
+equal to the given value (the value's floor).
 
 ### true
 

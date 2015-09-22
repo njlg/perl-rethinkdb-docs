@@ -118,10 +118,10 @@ this table to be ready if no indexes are specified.
 ### changes
 
 ```perl
-my $stream = r->table('games')->changes->run;
-foreach( @{$stream} ) {
+my $stream = r->table('games')->changes(sub {
+  my $item;
   say Dumper $_;
-}
+})->run;
 
 ```
 
@@ -188,6 +188,32 @@ is in the specified range (it uses the primary key by default). `left_bound`
 or `right_bound` may be set to open or closed to indicate whether or not to
 include that endpoint of the range (by default, `left_bound` is closed and
 `right_bound` is open).
+
+### get_intersecting
+
+```perl
+r->table('geo')
+  ->get_intersecting(
+  r->circle( [ -122.423246, 37.770378359 ], 10, { unit => 'mi' } ),
+  { index => 'location' } )->run;
+
+```
+
+Get all documents where the given geometry object intersects the geometry
+object of the requested geospatial index.
+
+### get_nearest
+
+```perl
+r->table('geo')->get_nearest(
+  r->point( -122.422876, 37.777128 ),
+  { index => 'location', max_dist => 5000 }
+)->run;
+
+```
+
+Get all documents where the specified geospatial index is within a certain
+distance of the specified point (default 100 kilometers).
 
 ### config
 

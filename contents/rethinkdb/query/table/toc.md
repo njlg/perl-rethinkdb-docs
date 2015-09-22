@@ -16,6 +16,8 @@
      - [get](#get)
      - [get_all](#get_all)
      - [between](#between)
+     - [get_intersecting](#get_intersecting)
+     - [get_nearest](#get_nearest)
      - [config](#config)
      - [rebalance](#rebalance)
      - [reconfigure](#reconfigure)

@@ -4,6 +4,7 @@
      - [type_description](#type_description)
      - [response](#response)
      - [token](#token)
-     - [error_message](#error_message)
+     - [error_type](#error_type)
      - [backtrace](#backtrace)
+     - [profile](#profile)
    - [SEE ALSO](#see-also)

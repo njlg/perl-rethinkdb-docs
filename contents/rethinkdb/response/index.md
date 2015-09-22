@@ -17,7 +17,8 @@ say $res->type;
 say $res->type_description;
 say $res->response;
 say $res->token;
-say $res->error_message;
+say $res->error_type;
+say $res->profile;
 say $res->backtrace;
 
 ```
@@ -80,11 +81,11 @@ say Dumper $res->token;
 Each request made to the database must have a unique token. The response from
 the database includes that token incase further actions are required.
 
-### error_message
+### error_type
 
 ```perl
 my $res = r->table('marvel')->run;
-say $res->error_message;
+say $res->error_type;
 
 ```
 
@@ -101,6 +102,17 @@ say $res->backtrace;
 
 If the request cause an error, this attribute will contain a backtrace for the
 error.
+
+### profile
+
+```perl
+my $res = r->table('marvel')->run;
+say $res->profile;
+
+```
+
+If profiling information was requested as a global argument for a query, then
+this attribute will contain that profiling data.
 
 ## SEE ALSO
 

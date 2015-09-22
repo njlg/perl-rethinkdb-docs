@@ -524,15 +524,38 @@ r->table('marvel')->get('IronMan')->attr('equipment')->
 Remove the elements of one array from another and return them as a set (an
 array with distinct values).
 
-### attr
+### get_field
 
 ```perl
-r->table('marvel')->get('IronMan')->attr('firstAppearance')->run;
+r->table('marvel')->get('IronMan')->get_field('firstAppearance')->run;
 
 ```
 
 Get a single field from an object. If called on a sequence, gets that field
 from every object in the sequence, skipping objects that lack it.
+
+### bracket
+
+```perl
+r->table('marvel')->get('IronMan')->bracket('firstAppearance')->run;
+r->expr([10, 20, 30, 40, 50])->bracket(3)->run;
+
+```
+
+Get a single field from an object or a single element from a sequence.
+
+### attr
+
+```perl
+r->table('marvel')->get('IronMan')->attr('firstAppearance')->run;
+r->expr([10, 20, 30, 40, 50])->attr(3)->run;
+
+```
+
+Get a single field from an object or a single element from a sequence.
+
+DEPERCATED: This method has been renamed to ["bracket"](#bracket), but ["attr"](#attr) will
+remain for a number of releases for backwards compatibility.
 
 ### has_fields
 
@@ -1021,6 +1044,119 @@ r->table('marvel')->info->run;
 ```
 
 Get information about a ReQL value.
+
+### fill
+
+```perl
+r->table('geo')->insert(
+  {
+    'id'        => 201,
+    'rectangle' => r->line(
+      [ -122.423246, 37.779388 ],
+      [ -122.423246, 37.329898 ],
+      [ -121.886420, 37.329898 ],
+      [ -121.886420, 37.779388 ]
+    )
+  }
+)->run;
+
+r->table('geo')->get(201)
+  ->update( { 'rectangle' => r->row->bracket('rectangle')->fill },
+  { non_atomic => r->true } )->run;
+
+```
+
+Convert a `Line` object into a `Polygon` object. If the last point does not
+specify the same coordinates as the first point, `polygon` will close the
+polygon by connecting them.
+
+### includes
+
+```perl
+r->circle( r->point( -117.220406, 32.719464 ), 2000 )
+  ->includes( r->point( -117.206201, 32.725186 ) )->run($conn);
+
+```
+
+Tests whether a geometry object is completely contained within another. When
+applied to a sequence of geometry objects, ["includes"](#includes) acts as a ["filter"](#filter),
+returning a sequence of objects from the sequence that include the argument.
+
+### intersects
+
+```perl
+r->circle( r->point( -117.220406, 32.719464 ), 2000 )
+  ->intersects( r->point( -117.206201, 32.725186 ) )->run($conn);
+
+```
+
+Tests whether two geometry objects intersect with one another. When applied
+to a sequence of geometry objects, ["intersects"](#intersects) acts as a ["filter"](#filter),
+returning a sequence of objects from the sequence that intersect with the
+argument.
+
+### polygon_sub
+
+```perl
+r->polygon(
+  [ -122.4, 37.7 ],
+  [ -122.4, 37.3 ],
+  [ -121.8, 37.3 ],
+  [ -121.8, 37.7 ]
+  )->polygon_sub(
+  r->polygon(
+    [ -122.3, 37.4 ],
+    [ -122.3, 37.6 ],
+    [ -122.0, 37.6 ],
+    [ -122.0, 37.4 ]
+  )
+  )->run($conn);
+
+```
+
+Use `polygon2` to "punch out" a hole in `polygon1`. `polygon2` must be
+completely contained within `polygon1` and must have no holes itself (it must
+not be the output of ["polygon_sub"](#polygon_sub) itself).
+
+### to_geojson
+
+```perl
+r->table('geo')->get('sfo')->bracket('location')->to_geojson->run;
+
+```
+
+Convert a ReQL geometry object to a [GeoJSON](http://geojson.org/) object.
+
+### round
+
+```perl
+r->expr(-12.567)->round->run($conn);
+
+```
+
+Rounds the given value to the nearest whole integer. For example, values of
+1.0 up to but not including 1.5 will return 1.0, similar to ["floor"](#floor); values
+of 1.5 up to 2.0 will return 2.0, similar to ["ceil"](#ceil).
+
+### ceil
+
+```perl
+r->expr(-12.567)->ceil->run($conn);
+
+```
+
+Rounds the given value up, returning the smallest integer value greater than
+or equal to the given value (the value's ceiling).
+
+### floor
+
+```perl
+r->expr(-12.567)->floor->run($conn);
+
+```
+
+Rounds the given value down, returning the largest integer value less than or
+equal to the given value (the value's floor).
 
 ## SEE ALSO
 
