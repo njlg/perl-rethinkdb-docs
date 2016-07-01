@@ -110,6 +110,16 @@ r->db('test')->table_list->run;
 
 List all table names in a database. The result is a list of strings.
 
+### grant
+
+```perl
+r->db('test')
+  ->grant( 'username', { read => r->true, write => r->false } )->run;
+
+```
+
+Grant or deny access permissions for a user account on a database.
+
 ### config
 
 ```perl

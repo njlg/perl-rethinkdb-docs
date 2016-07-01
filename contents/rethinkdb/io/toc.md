@@ -12,4 +12,5 @@
      - [repl](#repl)
      - [use](#use)
      - [noreply_wait](#noreply_wait)
+     - [server](#server)
    - [SEE ALSO](#see-also)

@@ -118,10 +118,10 @@ this table to be ready if no indexes are specified.
 ### changes
 
 ```perl
-my $stream = r->table('games')->changes(sub {
-  my $item;
-  say Dumper $_;
-})->run;
+my $stream = r->table('games')->changes->run(sub {
+  my ($response) = @_;
+  say Dumper $response;
+});
 
 ```
 
@@ -214,6 +214,16 @@ r->table('geo')->get_nearest(
 
 Get all documents where the specified geospatial index is within a certain
 distance of the specified point (default 100 kilometers).
+
+### grant
+
+```perl
+r->table('marvel')
+  ->grant( 'username', { read => r->true, write => r->false } )->run;
+
+```
+
+Grant or deny access permissions for a user account on a table.
 
 ### config
 

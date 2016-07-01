@@ -159,6 +159,23 @@ $io->noreply_wait;
 The `noreply_wait` method will tell the database to wait until all "no reply"
 have executed before responding.
 
+### server
+
+```perl
+my $conn = r->connect;
+$conn->server;
+
+```
+
+Return information about the server being used by this connection.
+
+The server command returns either two or three fields:
+
+- `id`: the UUID of the server the client is connected to.
+- `proxy`: a boolean indicating whether the server is a [RethinkDB proxy node](http://rethinkdb.com/docs/sharding-and-replication/#running-a-proxy-node).
+- `name`: the server name. If proxy is `r->true`, this field will not
+be returned.
+
 ## SEE ALSO
 
 [Rethinkdb](/perl-rethinkdb/rethinkdb), [http://rethinkdb.com](http://rethinkdb.com)

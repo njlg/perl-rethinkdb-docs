@@ -331,6 +331,35 @@ r->table('posts')->map(sub { return 1; })->reduce(sub($$) {
 Produce a single value from a sequence through repeated application of a
 reduction function.
 
+### fold
+
+```perl
+r->table('words')->order_by('id')->fold(
+  '',
+  sub ($$) {
+    my ( $acc, $word ) = @_;
+    return $acc->add( r->branch( $acc->eq(''), '', ', ' )->add($word) );
+  }
+)->run;
+
+r->table('tracker')->filter( { name => 'bob' } )->order_by('date')
+  ->bracket('weight')->fold(
+  [],
+  sub ($$) {
+    my ( $acc, $row ) = @_;
+    return $acc->append($row)->limit(5);
+  },
+  sub ($$$) {
+    my ( $acc, $row, $new_acc ) = @_;
+    return r->branch( new_acc->size()->eq(5), [ new_acc->avg() ], [] );
+  }
+  )->run;
+
+```
+
+Apply a function to a sequence in order, maintaining state via an accumulator.
+The fold command returns either a single value or a new sequence.
+
 ### count
 
 ```perl
@@ -614,6 +643,16 @@ r->table('marvel')->get('ironman')->keys->run;
 ```
 
 Return an array containing all of the object's keys.
+
+### values
+
+```perl
+r->table('marvel')->get('ironman')->values->run;
+
+```
+
+Return an array containing all of an object's values. `values` guarantees the
+values will come out in the same order as [keys](http://metacpan.org/pod/keys).
 
 ### match
 

@@ -9,6 +9,7 @@
      - [table_create](#table_create)
      - [table_drop](#table_drop)
      - [table_list](#table_list)
+     - [grant](#grant)
      - [config](#config)
      - [rebalance](#rebalance)
      - [reconfigure](#reconfigure)

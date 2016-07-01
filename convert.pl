@@ -140,7 +140,7 @@ sub clean_link {
 sub clean_anchor {
   my $link = shift;
 
-  say "\tclean_anchor $link";
+  # say "\tclean_anchor $link";
 
   # $link =~ s!\(#!(/#!g;
 
@@ -163,9 +163,9 @@ sub fix_links {
   $content =~ s!(\(/perl-rethinkdb/[^)]+\))!clean_link($1)!ge;
   $content =~ s!(\(#[^)]+\))!clean_anchor($1)!ge;
 
-  if($content =~ /minval/ ) {
-    say $content;
-  }
+  # if($content =~ /minval/ ) {
+  #   say $content;
+  # }
 
   return $content;
 }
@@ -180,6 +180,7 @@ sub fix_underscores {
 
 sub convert_to_markdown {
   my $file    = shift;
+  say  "readnig $file";
   my $content = read_file $file;
 
   if (0) {
@@ -235,7 +236,7 @@ sub convert_to_markdown {
   $start .= "\n\n";
   $start .= $output;
 
-  say "desc: $description";
+  # say "desc: $description";
 
   return ( $start, $description, $subtitle );
 }
@@ -362,12 +363,16 @@ my $subtitle;
 my @pages;
 foreach (@files) {
 
+  say "reading $_";
+
   # save package name
   if (
-    $_ =~ /\/Users\/nlevingreenhaw\/source\/perl-rethinkdb\/lib\/(.+)\.pm$/ )
+    $_ =~ /\/Users\/nlevingreenhaw\/source\/perl-rethinkdb\/lib\/(.+)\.pm$/
+    )
   {
     push @pages, $1;
   }
+
 
   # create markdowns
   ( $content, $description, $subtitle ) = convert_to_markdown $_;
@@ -382,6 +387,11 @@ foreach (@files) {
 
   say "writing $filename";
   makeDirectory $filename;
+
+  if( -f $filename ) {
+    unlink $filename;
+  }
+
   write_file $filename, $content;
 
   # make table of contents
@@ -389,6 +399,7 @@ foreach (@files) {
   $filename =~ s/index.md$/toc.md/;
 
   say "writing $filename";
+  # say $content;
   write_file $filename, $content;
 
   # # make navigation file

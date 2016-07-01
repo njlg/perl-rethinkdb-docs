@@ -79,6 +79,22 @@ my $conn2 = r->connect('localhost', 28015, 'test', 'auth_key', 20);
 Create a new connection to a RethinkDB shard. Creating a connection tries to
 contact the RethinkDB shard immediately and will fail if the connection fails.
 
+### server
+
+```perl
+r->server->run;
+
+```
+
+Return information about the server being used by the default connection.
+
+The server command returns either two or three fields:
+
+- `id`: the UUID of the server the client is connected to.
+- `proxy`: a boolean indicating whether the server is a [RethinkDB proxy node](http://rethinkdb.com/docs/sharding-and-replication/#running-a-proxy-node).
+- `name`: the server name. If proxy is `r->true`, this field will not
+be returned.
+
 ### db_create
 
 ```perl
@@ -743,6 +759,15 @@ r->floor(-12.567)->run;
 
 Rounds the given value down, returning the largest integer value less than or
 equal to the given value (the value's floor).
+
+### grant
+
+```perl
+r->grant('username', {read => r->true, write => r->false })->run;
+
+```
+
+Grant or deny access permissions for a user account globally.
 
 ### true
 

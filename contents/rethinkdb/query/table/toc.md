@@ -18,6 +18,7 @@
      - [between](#between)
      - [get_intersecting](#get_intersecting)
      - [get_nearest](#get_nearest)
+     - [grant](#grant)
      - [config](#config)
      - [rebalance](#rebalance)
      - [reconfigure](#reconfigure)
